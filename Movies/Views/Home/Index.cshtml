@@ -1,0 +1,75 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    string userName = ViewBag.UserName ?? "User";
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+    var users = ViewBag.Users as List<Movies.Models.User> ?? new();
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="mb-1">Dashboard</h2>
+        <p class="text-muted mb-0">Welcome back, <strong>@userName</strong> 👋</p>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a href="/Home/Movies" class="btn btn-dark">Movies</a>
+        <a href="/Home/Directors" class="btn btn-outline-dark">Directors</a>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="text-muted">Total Movies</div>
+                <h3 class="mb-0">@ViewBag.TotalMovies</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="text-muted">Total Directors</div>
+                <h3 class="mb-0">@ViewBag.TotalDirectors</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 alert alert-light border">
+    @(isAdmin ? "You are logged in as Admin. You can add and delete data." : "You are logged in as a normal user. You can view data only.")
+</div>
+
+@if (isAdmin)
+{
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h5 class="mb-3">Users</h5>
+
+            <table class="table table-bordered mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Full Name</th>
+                        <th>Admin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in users)
+                    {
+                        <tr>
+                            <td>@x.UserId</td>
+                            <td>@x.userName</td>
+                            <td>@x.userEmail</td>
+                            <td>@x.userFname</td>
+                            <td>@(x.isAdmin ? "Yes" : "No")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

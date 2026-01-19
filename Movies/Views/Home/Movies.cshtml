@@ -1,0 +1,78 @@
+﻿@model List<Movies.Models.Movie>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+    var directors = ViewBag.Directors as List<Movies.Models.Director> ?? new();
+}
+
+<h3>Movies</h3>
+
+<form method="get" action="/Home/Movies" class="row g-2 mb-3">
+    <div class="col-md-6">
+        <input name="search" class="form-control" placeholder="Search by movie title..." />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-dark w-100">Search</button>
+    </div>
+</form>
+
+@if (isAdmin)
+{
+    <div class="card p-3 mb-4 shadow-sm">
+        <h5 class="mb-3">Add Movie</h5>
+        <form method="post" action="/Home/AddMovie" class="row g-2">
+            <div class="col-md-3">
+                <input name="movieTitle" class="form-control" placeholder="Title" />
+            </div>
+            <div class="col-md-4">
+                <input name="movieDesc" class="form-control" placeholder="Description" />
+            </div>
+            <div class="col-md-2">
+                <input name="releaseDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <select name="DirectorId" class="form-select">
+                    <option value="">--Director--</option>
+                    @foreach (var d in directors)
+                    {
+                        <option value="@d.DirectorId">@d.directorName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-dark w-100">Add</button>
+            </div>
+        </form>
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Release</th>
+            <th>Director</th>
+            <th style="width:120px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>@m.MovieId</td>
+                <td>@m.movieTitle</td>
+                <td>@m.movieDesc</td>
+                <td>@(m.releaseDate?.ToString("yyyy-MM-dd"))</td>
+                <td>@m.Director?.directorName</td>
+                <td>
+                    @if (isAdmin)
+                    {
+                        <a class="btn btn-sm btn-danger" href="/Home/DeleteMovie/@m.MovieId">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

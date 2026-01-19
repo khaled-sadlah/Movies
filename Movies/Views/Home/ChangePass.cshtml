@@ -1,0 +1,22 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<h3>Change Password</h3>
+
+@if (ViewBag.msg != null)
+{
+    <div class="alert alert-danger">@ViewBag.msg</div>
+}
+
+<form method="post" action="/Home/ChangePass" style="max-width:500px;">
+    <div class="mb-3">
+        <label class="form-label">Old Password</label>
+        <input name="oldPass" type="password" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">New Password</label>
+        <input name="newPass" type="password" class="form-control" />
+    </div>
+    <button class="btn btn-dark">Save</button>
+</form>

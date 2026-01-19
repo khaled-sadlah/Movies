@@ -1,0 +1,70 @@
+﻿@model List<Movies.Models.Director>
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    bool isAdmin = ViewBag.IsAdmin ?? false;
+}
+
+<h3>Directors</h3>
+
+<form method="get" action="/Home/Directors" class="row g-2 mb-3">
+    <div class="col-md-6">
+        <input name="search" class="form-control" placeholder="Search by director name..." />
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-dark w-100">Search</button>
+    </div>
+</form>
+
+@if (isAdmin)
+{
+    <div class="card p-3 mb-4 shadow-sm">
+        <h5 class="mb-3">Add Director</h5>
+        <form method="post" action="/Home/AddDirector" class="row g-2">
+            <div class="col-md-4">
+                <input name="directorName" class="form-control" placeholder="Name" />
+            </div>
+            <div class="col-md-3">
+                <input name="directorBirthDate" type="date" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <select name="directorGender" class="form-select">
+                    <option value="">--Gender--</option>
+                    <option value="male">male</option>
+                    <option value="female">female</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100">Add</button>
+            </div>
+        </form>
+    </div>
+}
+
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Birth Date</th>
+            <th>Gender</th>
+            <th style="width:120px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td>@d.DirectorId</td>
+                <td>@d.directorName</td>
+                <td>@(d.directorBirthDate?.ToString("yyyy-MM-dd"))</td>
+                <td>@d.directorGender</td>
+                <td>
+                    @if (isAdmin)
+                    {
+                        <a class="btn btn-sm btn-danger" href="/Home/DeleteDirector/@d.DirectorId">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
